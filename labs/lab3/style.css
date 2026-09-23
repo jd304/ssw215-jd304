@@ -1,6 +1,6 @@
 :root {
-  color: #17221c;
-  background: #f3f0e8;
+  color: #ffffff;
+  background: #1b2a41;
   font-family: Georgia, "Times New Roman", serif;
 }
 
@@ -11,7 +11,7 @@
 body {
   min-width: 0;
   margin: 0;
-  background: #f3f0e8;
+  background: #1b2a41;
 }
 
 .hero,
@@ -36,7 +36,7 @@ footer {
 
 .eyebrow {
   margin: 0 0 1rem;
-  color: #9e4d2f;
+  color: #ffffff;
   font-family: Arial, sans-serif;
   font-size: 0.8rem;
   font-weight: 700;
@@ -52,7 +52,7 @@ p {
 
 h1 {
   margin-bottom: 1rem;
-  color: #173f35;
+  color: #ffffff;
   font-size: clamp(4rem, 12vw, 8rem);
   line-height: 0.9;
 }
@@ -65,8 +65,9 @@ h1 {
 .button {
   display: inline-block;
   padding: 0.85rem 1.2rem;
-  color: #f3f0e8;
-  background: #173f35;
+  color: #ffffff;
+  background: #1b2a41;
+  border: 1px solid #ffffff;
   font-family: Arial, sans-serif;
   font-size: 0.9rem;
   font-weight: 700;
@@ -77,7 +78,7 @@ h1 {
   display: block;
   width: 100%;
   height: auto;
-  border: 0.7rem solid #d8c9a7;
+  border: 0.7rem solid #ffffff;
   border-radius: 50%;
   object-fit: cover;
 }
@@ -85,12 +86,12 @@ h1 {
 .projects {
   max-width: 45rem;
   padding: 3rem 0 5rem;
-  border-top: 1px solid #c9c1ae;
+  border-top: 1px solid #ffffff;
 }
 
 h2 {
   margin-bottom: 1.5rem;
-  color: #173f35;
+  color: #ffffff;
   font-size: 2.5rem;
 }
 
@@ -105,19 +106,19 @@ ul {
 
 li {
   padding: 1.25rem;
-  border-left: 0.25rem solid #9e4d2f;
-  background: #e5dfd0;
+  border-left: 0.25rem solid #ffffff;
+  background: #263b59;
   font-size: 1.05rem;
 }
 
 footer {
   padding: 1.5rem 0 2rem;
-  border-top: 1px solid #c9c1ae;
+  border-top: 1px solid #ffffff;
   font-family: Arial, sans-serif;
 }
 
 footer a {
-  color: #173f35;
+  color: #ffffff;
   font-weight: 700;
 }
 
