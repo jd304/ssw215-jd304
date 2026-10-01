@@ -7,30 +7,44 @@
   <link rel="stylesheet" href="./style.css">
 </head>
 <body>
-  <header class="hero">
-    <div class="hero-content">
-      <p class="eyebrow">student in SSW-215</p>
-      <h1>Jillian</h1>
-      <p class="bio">software engineering major</p>
-      <a class="button" href="#projects">See my projects</a>
-    </div>
-    <img class="avatar" src="assets\avatar.jpeg" width="320" height="320" alt="Portrait of Jillian">
+  <header class="site-header">
+    <nav class="main-nav" aria-label="Main navigation">
+      <a href="#projects">Projects</a>
+      <a href="https://github.com/jd304" target="_blank" rel="noopener noreferrer">GitHub</a>
+    </nav>
+
+    <section class="hero-section" aria-labelledby="page-title">
+      <div class="hero-content">
+        <p class="eyebrow">student in SSW-215</p>
+        <h1 id="page-title">Jillian</h1>
+        <p class="bio">software engineering major</p>
+        <a class="button" href="#projects">See my projects</a>
+      </div>
+      <img class="avatar" src="assets\avatar.jpeg" width="320" height="320" alt="Portrait of Jillian">
+    </section>
   </header>
 
   <main>
-    <section id="projects" class="projects">
+    <section class="projects" id="projects" aria-labelledby="projects-heading">
       <p class="eyebrow">Selected work</p>
-      <h2>Projects</h2>
-      <ul>
-        <li>book tracking app</li>
-        <li>video games</li>
-        <li>study app</li>
-      </ul>
+      <h2 id="projects-heading">Projects</h2>
+
+      <div class="project-grid">
+        <article class="card">
+          <h3>book tracking app</h3>
+        </article>
+        <article class="card">
+          <h3>video games</h3>
+        </article>
+        <article class="card">
+          <h3>study app</h3>
+        </article>
+      </div>
     </section>
   </main>
 
-  <footer>
-    <a href="https://github.com/jd304" target="_blank" rel="noopener">GitHub</a>
+  <footer class="site-footer">
+    <a href="https://github.com/jd304" target="_blank" rel="noopener noreferrer">GitHub</a>
   </footer>
 </body>
 </html>
