@@ -1,0 +1,140 @@
+:root {
+  color: #ffffff;
+  background: #1b2a41;
+  font-family: Georgia, "Times New Roman", serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  min-width: 0;
+  margin: 0;
+  background: #1b2a41;
+}
+
+.hero,
+main,
+footer {
+  width: min(100% - 3rem, 72rem);
+  margin: 0 auto;
+}
+
+.hero {
+  display: grid;
+  grid-template-columns: 1fr 20rem;
+  align-items: center;
+  gap: 4rem;
+  min-height: 34rem;
+  padding: 4rem 0;
+}
+
+.hero-content {
+  max-width: 34rem;
+}
+
+.eyebrow {
+  margin: 0 0 1rem;
+  color: #ffffff;
+  font-family: Arial, sans-serif;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+h1,
+h2,
+p {
+  margin-top: 0;
+}
+
+h1 {
+  margin-bottom: 1rem;
+  color: #ffffff;
+  font-size: clamp(4rem, 12vw, 8rem);
+  line-height: 0.9;
+}
+
+.bio {
+  margin-bottom: 2rem;
+  font-size: 1.35rem;
+}
+
+.button {
+  display: inline-block;
+  padding: 0.85rem 1.2rem;
+  color: #ffffff;
+  background: #1b2a41;
+  border: 1px solid #ffffff;
+  font-family: Arial, sans-serif;
+  font-size: 0.9rem;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.avatar {
+  display: block;
+  width: 100%;
+  height: auto;
+  border: 0.7rem solid #ffffff;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.projects {
+  max-width: 45rem;
+  padding: 3rem 0 5rem;
+  border-top: 1px solid #ffffff;
+}
+
+h2 {
+  margin-bottom: 1.5rem;
+  color: #ffffff;
+  font-size: 2.5rem;
+}
+
+ul {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+li {
+  padding: 1.25rem;
+  border-left: 0.25rem solid #ffffff;
+  background: #263b59;
+  font-size: 1.05rem;
+}
+
+footer {
+  padding: 1.5rem 0 2rem;
+  border-top: 1px solid #ffffff;
+  font-family: Arial, sans-serif;
+}
+
+footer a {
+  color: #ffffff;
+  font-weight: 700;
+}
+
+@media (max-width: 767px) {
+  .hero,
+  ul {
+    grid-template-columns: 1fr;
+  }
+
+  .hero {
+    gap: 2.5rem;
+    min-height: auto;
+    padding: 3rem 0;
+  }
+
+  .avatar {
+    max-width: 16rem;
+  }
+}
