@@ -93,16 +93,69 @@ h1 {
   font-size: 1.35rem;
 }
 
-.button {
+.button,
+.secondary-button {
   display: inline-block;
+  margin-top: 0.5rem;
+  margin-right: 0.75rem;
   padding: 0.85rem 1.2rem;
-  background: transparent;
-  border: 0.0625rem solid var(--white);
-  color: var(--white);
   font-family: Arial, sans-serif;
   font-size: 0.9rem;
   font-weight: 700;
   text-decoration: none;
+  border: 0.0625rem solid var(--white);
+  cursor: pointer;
+}
+
+.button {
+  background: transparent;
+  color: var(--white);
+}
+
+.button:hover {
+  background: rgba(255, 255, 255, 0.12);
+  transform: translateY(-0.0625rem);
+}
+
+.button:focus-visible {
+  outline: 0.1875rem solid #a5d8ff;
+  outline-offset: 0.1875rem;
+  background: rgba(255, 255, 255, 0.18);
+}
+
+.button:active {
+  background: rgba(255, 255, 255, 0.24);
+  transform: translateY(0);
+}
+
+.button:disabled {
+  background: rgba(255, 255, 255, 0.08);
+  color: rgba(255, 255, 255, 0.7);
+  cursor: not-allowed;
+}
+
+.secondary-button {
+  background: rgba(255, 255, 255, 0.08);
+  color: rgba(255, 255, 255, 0.7);
+  cursor: not-allowed;
+}
+
+.secondary-button:disabled,
+.secondary-button:disabled:hover,
+.secondary-button:disabled:focus-visible,
+.secondary-button:disabled:active {
+  background: rgba(255, 255, 255, 0.05);
+  color: rgba(255, 255, 255, 0.55);
+  border-color: rgba(255, 255, 255, 0.35);
+  outline: none;
+  transform: none;
+  box-shadow: none;
+}
+
+.secondary-button:hover,
+.secondary-button:focus-visible,
+.secondary-button:active {
+  cursor: not-allowed;
 }
 
 .avatar {
@@ -127,9 +180,8 @@ h2 {
 .project-grid {
   display: flex;
   flex-wrap: wrap;
-  gap: 2rem; /* hand-edited by JD */
+  gap: 1rem;
 }
-
 
 .card {
   flex: 1 1 12rem;
@@ -137,11 +189,6 @@ h2 {
   padding: 1.5rem;
   background: var(--panel);
   border-left: 0.25rem solid var(--white);
-}
-
- /* hand-edited by JD */
-.featured {
-background-color: #fff7e6;
 }
 
 .card h3 {
