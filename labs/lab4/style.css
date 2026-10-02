@@ -127,8 +127,9 @@ h2 {
 .project-grid {
   display: flex;
   flex-wrap: wrap;
-  gap: 1rem;
+  gap: 2rem; /* hand-edited by JD */
 }
+
 
 .card {
   flex: 1 1 12rem;
@@ -136,6 +137,11 @@ h2 {
   padding: 1.5rem;
   background: var(--panel);
   border-left: 0.25rem solid var(--white);
+}
+
+ /* hand-edited by JD */
+.featured {
+background-color: #fff7e6;
 }
 
 .card h3 {
