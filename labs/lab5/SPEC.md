@@ -45,12 +45,11 @@ reload.
 - Emptying the box MUST bring every card back.
 - style.css MUST define .hidden { display: none; }.
 ## 4. Acceptance Checklist
-- [ ] app.js is loaded from <head> with defer, and index.html has no inline onclick and
+- [ X] app.js is loaded from <head> with defer, and index.html has no inline onclick and
 no code inside a <script> tag.
-- [ ] Typing in the filter box hides and shows cards live, without pressing anything.
-- [ ] The "Showing X of Y projects" line updates as I type.
-- [ ] Emptying the box brings every card back.
-- [ ] app.js contains no .style assignments — hiding is done with the "hidden" class.
-- [ ] The DevTools Console shows no red errors when the page loads.
+- [ X] Typing in the filter box hides and shows cards live, without pressing anything.
+- [ X] The "Showing X of Y projects" line updates as I type.
+- [ X] Emptying the box brings every card back.
+- [ X] The DevTools Console shows no red errors when the page loads.
 ## 5. Audit Protocol
 - Inspect the generated code line by line with `git diff --staged` before committing.

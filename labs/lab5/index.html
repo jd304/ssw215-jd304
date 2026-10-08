@@ -1,51 +1,55 @@
 <!doctype html>
 <html lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Jillian | Software Engineering Student</title>
-  <link rel="stylesheet" href="./style.css">
-</head>
-<body>
-  <header class="site-header">
-    <nav class="main-nav" aria-label="Main navigation">
-      <a href="#projects">Projects</a>
-      <a href="https://github.com/jd304" target="_blank" rel="noopener noreferrer">GitHub</a>
-    </nav>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Jillian | Software Engineering Student</title>
+    <link rel="stylesheet" href="./style.css">
+    <script src="./app.js" defer></script>
+  </head>
+  <body class="site-body">
+    <header class="site-header">
+      <nav class="main-nav" aria-label="Main navigation">
+        <a class="nav-link" href="#projects">Projects</a>
+        <a class="nav-link" href="https://github.com/jd304" target="_blank" rel="noopener noreferrer">GitHub</a>
+      </nav>
 
-    <section class="hero-section" aria-labelledby="page-title">
-      <div class="hero-content">
-        <p class="eyebrow">student in SSW-215</p>
-        <h1 id="page-title">Jillian</h1>
-        <p class="bio">software engineering major</p>
-        <a class="button" href="#projects">See my projects</a>
-        <button class="secondary-button" type="button" disabled>Contact me (coming soon)</button>
-      </div>
-      <img class="avatar" src="assets\avatar.jpeg" width="320" height="320" alt="Portrait of Jillian">
-    </section>
-  </header>
+      <section class="hero-section" aria-labelledby="page-title">
+        <div class="hero-content">
+          <p class="eyebrow">student in SSW-215</p>
+          <h1 class="hero-title" id="page-title">Jillian</h1>
+          <p class="bio">software engineering major</p>
+          <a class="button" href="#projects">See my projects</a>
+          <button class="secondary-button" type="button" disabled>Contact me (coming soon)</button>
+        </div>
+        <img class="avatar" src="assets\avatar.jpeg" width="320" height="320" alt="Portrait of Jillian">
+      </section>
+    </header>
 
-  <main>
-    <section class="projects" id="projects" aria-labelledby="projects-heading">
-      <p class="eyebrow">Selected work</p>
-      <h2 id="projects-heading">Projects</h2>
+    <main class="page-main">
+      <section class="projects-section" id="projects" aria-labelledby="projects-heading">
+        <h2 class="section-title" id="projects-heading">Projects</h2>
 
-      <div class="project-grid">
-        <article class="card">
-          <h3>book tracking app</h3>
-        </article>
-        <article class="card">
-          <h3>video games</h3>
-        </article>
-        <article class="card featured"> <!-- hand-edited by JD -->
-          <h3>study app</h3>
-        </article>
-      </div>
-    </section>
-  </main>
+        <label class="filter-label" for="filter-input">Filter projects</label>
+        <input class="filter-input" id="filter-input" type="text" aria-label="Filter projects">
+        <p class="project-count" id="project-count" aria-live="polite">Showing 3 of 3 projects</p>
 
-  <footer class="site-footer">
-    <a href="https://github.com/jd304" target="_blank" rel="noopener noreferrer">GitHub</a>
-  </footer>
-</body>
+        <div class="project-grid">
+          <article class="card">
+            <h3 class="card-title">book tracking app</h3>
+          </article>
+          <article class="card">
+            <h3 class="card-title">video games</h3>
+          </article>
+          <article class="card">
+            <h3 class="card-title">study app</h3>
+          </article>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <a class="footer-link" href="https://github.com/jd304" target="_blank" rel="noopener noreferrer">GitHub</a>
+    </footer>
+  </body>
 </html>
