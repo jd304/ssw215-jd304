@@ -53,7 +53,7 @@ no code inside a <script> tag.
 - [ X] The "Showing X of Y projects" line updates as I type.
 - [ X] Emptying the box brings every card back.
 - [ X] The DevTools Console shows no red errors when the page loads.
-- [ ] Typing in the filter prints the matching project titles in the Console, and the
+- [ X] Typing in the filter prints the matching project titles in the Console, and the
 list gets shorter as I type.
 ## 5. Audit Protocol
 - Inspect the generated code line by line with `git diff --staged` before committing.
