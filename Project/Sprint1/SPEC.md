@@ -41,5 +41,8 @@ no code inside a <script> tag.
 - [ ] The DevTools Console shows no red errors when the page loads.
 - [ ] Clikcing the "add books" button adds a new card to the books section.
 
+## 5. Audit Protocol
+- Inspect the generated code line by line with `git diff --staged` before committing.
+
 
 
