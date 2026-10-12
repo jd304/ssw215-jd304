@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Book Tracking</title>
+    <link rel="stylesheet" href="./style.css" />
+    <script src="./app.js" defer></script>
+  </head>
+  <body>
+    <header class="page-header">
+      <div class="header-content">
+        <h1>Welcome to Book Tracking</h1>
+        <p class="subtitle">Insert your reading statistics and track your goals</p>
+        <a class="button secondary" href="#books">See my books</a>
+      </div>
+    </header>
+
+    <main class="page-main">
+      <section class="book-form-section" id="addBooks" aria-label="Add a new book">
+        <div class="field-group">
+          <label for="new-book">Enter book title</label>
+          <input id="new-book" name="new-book" type="text" />
+        </div>
+
+        <div class="field-group">
+          <label for="book-author">Enter author name</label>
+          <input id="book-author" name="book-author" type="text" />
+        </div>
+
+        <div class="field-group">
+          <label for="book-rating">Enter star rating for the book</label>
+          <input id="book-rating" name="book-rating" type="text" />
+        </div>
+
+        <a class="button primary add-book-link" href="#addBooks">Add book</a>
+      </section>
+
+      <section class="books-section" id="Books">
+        <div class="books-wrapper" id="books" aria-live="polite">
+          <div class="books-header">
+            <h2>Books</h2>
+            <span class="book-count" id="book-count">0</span>
+          </div>
+          <div class="books-list" aria-label="Book list"></div>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>
