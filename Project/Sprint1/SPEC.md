@@ -34,12 +34,12 @@ bound to it reading "Enter star rating for the book".
 - After pressing the "Add book" button a card should appear under the Books section with the information that was inputed.  
 
 ## 4. Acceptance Checklist
-- [ ] app.js is loaded from <head> with defer, and index.html has no inline onclick and
+- [ X] app.js is loaded from <head> with defer, and index.html has no inline onclick and
 no code inside a <script> tag.
-- [ ] Clicking the buttons updates the page without reloading it.
-- [ ] app.js contains no .style assignments.
-- [ ] The DevTools Console shows no red errors when the page loads.
-- [ ] Clikcing the "add books" button adds a new card to the books section.
+- [ X] Clicking the buttons updates the page without reloading it.
+- [ X] app.js contains no .style assignments.
+- [X ] The DevTools Console shows no red errors when the page loads.
+- [ X] Clikcing the "add books" button adds a new card to the books section.
 
 ## 5. Audit Protocol
 - Inspect the generated code line by line with `git diff --staged` before committing.
