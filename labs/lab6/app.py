@@ -21,6 +21,12 @@ projects_db = [
         "description": "An app to help organize study sessions.",
         "likes": 0,
     },
+    { #hand edited by JD
+        "id": 4,#hand edited by JD
+        "title": "exercise tracking app",#hand edited by JD
+        "description": "An app to help organize track how active the user is.",#hand edited by JD
+        "likes": 0,#hand edited by JD
+    }#hand edited by JD
 ]
 
 
