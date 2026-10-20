@@ -22,7 +22,7 @@
           <a class="button" href="#projects">See my projects</a>
           <button class="secondary-button" type="button" disabled>Contact me (coming soon)</button>
         </div>
-        <img class="avatar" src="static/assets/avatar.jpeg" width="320" height="320" alt="Portrait of Jillian">
+        <img class="avatar" src="static\assets\avatar.jpeg" width="320" height="320" alt="Portrait of Jillian">
       </section>
     </header>
 
@@ -32,14 +32,19 @@
 
         <label class="filter-label" for="filter-input">Filter projects</label>
         <input class="filter-input" id="filter-input" type="text" aria-label="Filter projects">
-        <p class="project-count" id="project-count" aria-live="polite">Showing 3 of 3 projects</p>
+        <p class="project-count" id="project-count" aria-live="polite">Showing {{ projects|length }} of {{ projects|length }} projects</p>
 
         <div class="project-grid">
           {% for project in projects %}
           <article class="card" data-project-id="{{ project.id }}">
             <h3 class="card-title">{{ project.title }}</h3>
             <p class="card-description">{{ project.description }}</p>
-            <p class="card-likes">Likes: {{ project.likes }}</p>
+            {% if project.likes > 10 %}
+           <!-- hand edited by JD -->
+            <span class="badge">Trending</span>
+            {% endif %}
+            <p class="card-likes">Likes: <span class="like-count">{{ project.likes }}</span></p>
+            <button class="upvote-btn" type="button">Upvote</button>
           </article>
           {% endfor %}
         </div>
