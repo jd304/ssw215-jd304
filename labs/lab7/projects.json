@@ -1,0 +1,26 @@
+[
+    {
+        "id": 1,
+        "title": "book tracking app",
+        "description": "A simple way to keep track of books.",
+        "likes": 0
+    },
+    {
+        "id": 2,
+        "title": "video games",
+        "description": "A collection of video game projects.",
+        "likes": 0
+    },
+    {
+        "id": 3,
+        "title": "study app",
+        "description": "An app to help organize study sessions.",
+        "likes": 0
+    },
+    { 
+        "id": 4,
+        "title": "exercise tracking app",
+        "description": "An app to help organize track how active the user is.",
+        "likes": 0
+    }
+]
