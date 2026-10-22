@@ -22,5 +22,17 @@
     "title": "exercise tracking app",
     "description": "An app to help organize track how active the user is.",
     "likes": 0
+  },
+  {
+    "id": 5,
+    "title": "project",
+    "description": "",
+    "likes": 0
+  },
+  {
+    "id": 6,
+    "title": "movie rating project",
+    "description": "",
+    "likes": 0
   }
 ]

@@ -34,6 +34,12 @@
         <input class="filter-input" id="filter-input" type="text" aria-label="Filter projects">
         <p class="project-count" id="project-count" aria-live="polite">Showing {{ projects|length }} of {{ projects|length }} projects</p>
 
+        <div class="project-create">
+          <label class="filter-label" for="new-title">New project title</label>
+          <input class="filter-input" id="new-title" type="text">
+          <button class="upvote-btn" id="add-project" type="button">Add project</button>
+        </div>
+
         <div class="project-grid">
           {% for project in projects %}
           <article class="card" data-project-id="{{ project.id }}">
