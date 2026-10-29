@@ -98,7 +98,7 @@ def create_project():
         db.session.commit()
     except SQLAlchemyError:
         db.session.rollback()
-        return jsonify({"error": "A project with that title already exists"}), 400
+        return jsonify({"error": "A project with that title already exists"}), 400 
 
     return jsonify(project.to_dict()), 201
 
