@@ -50,13 +50,13 @@ bookInfo_db.
 filter in app.js keeps working with no changes to app.js.
 
 ## 4. Acceptance Checklist
-- [ ] Running app.py starts a server, and the page loads at http://127.0.0.1:5000/.
-- [ ] Every card on the page comes from the {% for %} loop — index.html contains no
+- [ X] Running app.py starts a server, and the page loads at http://127.0.0.1:5000/.
+- [ X] Every card on the page comes from the {% for %} loop — index.html contains no
 hardcoded card.
-- [ ] Each card carries data-book-id with that book's id.
-- [ ] Changing a title in app.py and reloading the page changes what I see.
-- [ ] The page is styled — style.css and app.js both loaded.
-- [ ] The DevTools Console shows no red errors
+- [ X] Each card carries data-book-id with that book's id.
+- [ X] Changing a title in app.py and reloading the page changes what I see.
+- [ X] The page is styled — style.css and app.js both loaded.
+- [ X] The DevTools Console shows no red errors
 
 ## 5. Audit Protocol
 - Inspect the generated code line by line with `git diff --staged` before committing.

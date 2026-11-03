@@ -45,6 +45,7 @@
           <article class="card" data-project-id="{{ project.id }}">
             <h3 class="card-title">{{ project.title }}</h3>
             <p class="card-description">{{ project.description }}</p>
+            <p class="card-author">Author: <span class="author-name">{{ project.author.name }}</span></p>
             {% if project.likes > 10 %}
            <!-- hand edited by JD -->
             <span class="badge">Trending</span>
