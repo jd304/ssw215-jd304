@@ -60,11 +60,11 @@ filter in app.js keeps working with no changes to app.js.
 shows whatever the file currently contains.
 
 ## 4. Acceptance Checklist
-- [ ] The page still loads at http://127.0.0.1:5000/ and shows every project in
-projects.json.
-- [ ] app.py contains no hardcoded project list.
+- [ ] The page still loads at http://127.0.0.1:5000/ and shows every book in
+books.json.
+- [ ] app.py contains no hardcoded book list.
 - [ ] Stopping the server with Ctrl+C, restarting it, and reloading the page keeps the book list on the page.
-- [ ] Editing a title directly in projects.json and reloading the page changes what I
+- [ ] Editing a title directly in books.json and reloading the page changes what I
 see.
 - [ ] The DevTools Console shows no red errors.
 
