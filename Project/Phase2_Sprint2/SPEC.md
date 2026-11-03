@@ -25,6 +25,14 @@ plain relative path.
 never processed by Flask.
 - app.py MUST create the application with app = Flask(__name__), and MUST end with a
 block that runs it with debug=True when the file is executed directly
+- books.json MUST be the only source of book data. app.py MUST NOT contain a
+hardcoded list of books.
+- The path to book.json MUST be built from the location of app.py, not from a bare
+relative path.
+- Every route that changes a project MUST write the whole list back to books.json
+before it returns a response.
+- books.json MUST be written with json.dump(..., indent=2) so it stays readable in a
+diff.
 
 ## 3.UI Content & Interface Contract
 - Header: the message "Welcome to Book Tracking", the subtitle "Insert your reading statistics and track your goals".
@@ -48,15 +56,17 @@ and rating (an integer).
 bookInfo_db.
 - The rendered cards MUST keep the same classes they had in SPrint 1, so that the existing
 filter in app.js keeps working with no changes to app.js.
+- app.py MUST read books.json and pass the resulting list to the template, so the page
+shows whatever the file currently contains.
 
 ## 4. Acceptance Checklist
-- [ X] Running app.py starts a server, and the page loads at http://127.0.0.1:5000/.
-- [ X] Every card on the page comes from the {% for %} loop — index.html contains no
-hardcoded card.
-- [ X] Each card carries data-book-id with that book's id.
-- [ X] Changing a title in app.py and reloading the page changes what I see.
-- [ X] The page is styled — style.css and app.js both loaded.
-- [ X] The DevTools Console shows no red errors
+- [ ] The page still loads at http://127.0.0.1:5000/ and shows every project in
+projects.json.
+- [ ] app.py contains no hardcoded project list.
+- [ ] Stopping the server with Ctrl+C, restarting it, and reloading the page keeps the book list on the page.
+- [ ] Editing a title directly in projects.json and reloading the page changes what I
+see.
+- [ ] The DevTools Console shows no red errors.
 
 ## 5. Audit Protocol
 - Inspect the generated code line by line with `git diff --staged` before committing.
