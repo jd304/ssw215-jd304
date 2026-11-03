@@ -121,9 +121,9 @@ from each project's to_dict() method.
 writing to the database instead of to a file.
 - A project created with the Add project form MUST be attached to the same seeded author.
 <!-- written by JD -->
-- The author id MUST be visible in the project cards.
+- the author name MUST be visible in each of the project cards, above the like count
 <!-- written by JD -->
-- The author id MUST match the author id in the API.
+- The author name MUST match the author name in the API.
 ## 4. Acceptance Checklist
 - [ X] Starting the server creates instance/portfolio.db, and the page shows the projects
 that were in projects_seed.json.
@@ -134,12 +134,12 @@ JSON.
 - [X ] Adding a project whose title already exists does not create a second copy, and the
 server does not crash.
 - [ X] instance/ and *.db are ignored by Git and do not appear in git status.
-- [ ] instance/portfolio.db contains two tables.
-- [ ] Deleting instance/portfolio.db and restarting rebuilds both tables with the seed
+- [ X] instance/portfolio.db contains two tables.
+- [ X] Deleting instance/portfolio.db and restarting rebuilds both tables with the seed
 <!-- written by JD -->
-- [ ] Restarting the sever does not change an author id
+- [X ] Restarting the sever does not change an author name
 <!-- written by JD -->
-- [ ] Starting the server loads the author id on screen
+- [X ] Starting the server loads the author name on screen
 data.
 ## 5. Audit Protocol
 - Inspect the generated code line by line with `git diff --staged` before committing.
