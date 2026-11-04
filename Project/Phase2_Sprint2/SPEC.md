@@ -33,6 +33,10 @@ relative path.
 before it returns a response.
 - books.json MUST be written with json.dump(..., indent=2) so it stays readable in a
 diff.
+- A create request whose title or author is missing, or is empty once surrounding spaces are
+removed, MUST be rejected by the server with status code 400, and the rejection MUST
+happen before books.json is opened.
+- The new books's id MUST be one higher than the largest id already in the file.
 
 ## 3.UI Content & Interface Contract
 - Header: the message "Welcome to Book Tracking", the subtitle "Insert your reading statistics and track your goals".
@@ -58,15 +62,13 @@ bookInfo_db.
 filter in app.js keeps working with no changes to app.js.
 - app.py MUST read books.json and pass the resulting list to the template, so the page
 shows whatever the file currently contains.
+- A successful create MUST return the new book as JSON with status code 201.
 
 ## 4. Acceptance Checklist
-- [ X] The page still loads at http://127.0.0.1:5000/ and shows every book in
-books.json.
-- [X ] app.py contains no hardcoded book list.
-- [ X] Stopping the server with Ctrl+C, restarting it, and reloading the page keeps the book list on the page.
-- [X ] Editing a title directly in books.json and reloading the page changes what I
-see.
-- [ X] The DevTools Console shows no red errors.
+- [ ] The new project is in projects.json, and it is still there after a restart.
+- [ ] The Network tab shows the create request returning 201.
+- [ ] Submitting an empty title leaves projects.json unchanged, and the server answers
+400.
 
 ## 5. Audit Protocol
 - Inspect the generated code line by line with `git diff --staged` before committing.
