@@ -54,16 +54,16 @@ and rating (an integer).
 - Each rendered card MUST carry the attribute data-book-id holding that books's id.
  Visiting http://127.0.0.1:5000/ MUST serve the page, with one card per entry in
 bookInfo_db.
-- The rendered cards MUST keep the same classes they had in SPrint 1, so that the existing
+- The rendered cards MUST keep the same classes they had in Sprint 1, so that the existing
 filter in app.js keeps working with no changes to app.js.
 - app.py MUST read books.json and pass the resulting list to the template, so the page
 shows whatever the file currently contains.
 
 ## 4. Acceptance Checklist
-- [ ] The page still loads at http://127.0.0.1:5000/ and shows every book in
+- [ X] The page still loads at http://127.0.0.1:5000/ and shows every book in
 books.json.
-- [ ] app.py contains no hardcoded book list.
-- [ ] Stopping the server with Ctrl+C, restarting it, and reloading the page keeps the book list on the page.
+- [X ] app.py contains no hardcoded book list.
+- [ X] Stopping the server with Ctrl+C, restarting it, and reloading the page keeps the book list on the page.
 - [ ] Editing a title directly in books.json and reloading the page changes what I
 see.
 - [ ] The DevTools Console shows no red errors.
