@@ -64,9 +64,9 @@ shows whatever the file currently contains.
 books.json.
 - [X ] app.py contains no hardcoded book list.
 - [ X] Stopping the server with Ctrl+C, restarting it, and reloading the page keeps the book list on the page.
-- [ ] Editing a title directly in books.json and reloading the page changes what I
+- [X ] Editing a title directly in books.json and reloading the page changes what I
 see.
-- [ ] The DevTools Console shows no red errors.
+- [ X] The DevTools Console shows no red errors.
 
 ## 5. Audit Protocol
 - Inspect the generated code line by line with `git diff --staged` before committing.
