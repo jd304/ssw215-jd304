@@ -1,1 +1,8 @@
-[]
+[
+  {
+    "id": 1,
+    "title": "pride and prejudice",
+    "author": "jane austen",
+    "rating": 5
+  }
+]
