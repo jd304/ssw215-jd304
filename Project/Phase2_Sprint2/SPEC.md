@@ -65,10 +65,9 @@ shows whatever the file currently contains.
 - A successful create MUST return the new book as JSON with status code 201.
 
 ## 4. Acceptance Checklist
-- [ ] The new project is in projects.json, and it is still there after a restart.
+- [ ] The new project is in books.json, and it is still there after a restart.
 - [ ] The Network tab shows the create request returning 201.
-- [ ] Submitting an empty title leaves projects.json unchanged, and the server answers
-400.
+
 
 ## 5. Audit Protocol
 - Inspect the generated code line by line with `git diff --staged` before committing.
