@@ -62,10 +62,11 @@ bookInfo_db.
 filter in app.js keeps working with no changes to app.js.
 - app.py MUST read books.json and pass the resulting list to the template, so the page
 shows whatever the file currently contains.
-- A successful create MUST return the new book as JSON with status code 201.
+- A successful create MUST return the new book as JSON with status code 201 in the network tab.
+- All codes must appear in the Networks tab.
 
 ## 4. Acceptance Checklist
-- [ ] The new project is in books.json, and it is still there after a restart.
+- [ X] The new project is in books.json, and it is still there after a restart.
 - [ ] The Network tab shows the create request returning 201.
 
 
