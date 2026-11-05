@@ -40,6 +40,15 @@ function createProjectCard(project) {
   description.textContent = project.description;
   card.append(description);
 
+  const author = document.createElement('p');
+  author.className = 'card-author';
+  author.append('Author: ');
+  const authorName = document.createElement('span');
+  authorName.className = 'author-name';
+  authorName.textContent = project.author_name;
+  author.append(authorName);
+  card.append(author);
+
   if (project.likes > 10) {
     const badge = document.createElement('span');
     badge.className = 'badge';

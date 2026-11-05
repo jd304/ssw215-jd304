@@ -38,13 +38,20 @@ async function addBook() {
 
   const title = titleInput.value.trim();
   const author = authorInput.value.trim();
-  const rating = Number(ratingInput.value);
+  const ratingValue = ratingInput.value.trim();
+  const rating = Number(ratingValue);
 
   if (!title || !author) {
     titleInput.setCustomValidity(title ? '' : 'Enter a book title.');
     authorInput.setCustomValidity(author ? '' : 'Enter an author name.');
     titleInput.reportValidity();
     authorInput.reportValidity();
+    return;
+  }
+
+  if (!/^-?\d+$/.test(ratingValue) || !Number.isSafeInteger(rating)) {
+    ratingInput.setCustomValidity('Enter a whole-number star rating.');
+    ratingInput.reportValidity();
     return;
   }
 

@@ -35,15 +35,17 @@ def add_book():
 
     title = submitted_book.get("title")
     author = submitted_book.get("author")
-    rating = submitted_book.get("rating")
     if (
         not isinstance(title, str)
         or not title.strip()
         or not isinstance(author, str)
         or not author.strip()
-        or type(rating) is not int
     ):
-        return jsonify(error="Title, author, and integer rating are required."), 400
+        return jsonify(error="A non-empty title and author are required."), 400
+
+    rating = submitted_book.get("rating")
+    if type(rating) is not int:
+        return jsonify(error="An integer rating is required."), 400
 
     bookInfo_db = load_books()
     new_book = {

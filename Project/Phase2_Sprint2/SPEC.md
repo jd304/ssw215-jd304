@@ -67,7 +67,7 @@ shows whatever the file currently contains.
 
 ## 4. Acceptance Checklist
 - [ X] The new project is in books.json, and it is still there after a restart.
-- [ ] The Network tab shows the create request returning 201.
+- [ X] The Network tab shows the create request returning 201. 
 
 
 ## 5. Audit Protocol
