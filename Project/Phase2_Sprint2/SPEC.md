@@ -37,6 +37,18 @@ diff.
 removed, MUST be rejected by the server with status code 400, and the rejection MUST
 happen before books.json is opened.
 - The new books's id MUST be one higher than the largest id already in the file.
+- All book data MUST live in a SQLite database managed by Flask-SQLAlchemy. app.py
+MUST NOT read or write books_seed.json at runtime, except when seeding an empty
+database.
+- The book model MUST declare id as the primary key, title as db.String(120) with
+nullable=False and unique=True, and rating as db.Integer.
+- The database MUST be created by db.create_all() inside an app.app_context() block when
+the server starts.
+- init_seed_data() MUST insert the books from books_seed.json only when the
+projects table is empty, so restarting the server never duplicates rows.
+- Any commit the database refuses MUST be followed by db.session.rollback(), and the
+route MUST return 400 with a JSON error rather than crashing.
+
 
 ## 3.UI Content & Interface Contract
 - Header: the message "Welcome to Book Tracking", the subtitle "Insert your reading statistics and track your goals".
@@ -64,11 +76,18 @@ filter in app.js keeps working with no changes to app.js.
 shows whatever the file currently contains.
 - A successful create MUST return the new book as JSON with status code 201 in the network tab.
 - All codes must appear in the Networks tab.
-
+- The page MUST still be rendered by Jinja from templates/index.html, with the book
+list coming from a database query.
+- GET /api/projects MUST return every book as a JSON array with status code 200, built
+from each book's to_dict() method.
+-Adding a book MUST write to the database instead of a file
 ## 4. Acceptance Checklist
-- [ X] The new project is in books.json, and it is still there after a restart.
-- [ X] The Network tab shows the create request returning 201. 
-
+- [ ] Starting the server creates instance/portfolio.db, and the page shows the projects
+that were in projects_seed.json.
+- [ ] Restarting the server does not duplicate any project.
+- [ ] Opening http://127.0.0.1:5000/api/projects in the browser shows the projects as
+JSON.
+- [ ] instance/ and *.db are ignored by Git and do not appear in git status.
 
 ## 5. Audit Protocol
 - Inspect the generated code line by line with `git diff --staged` before committing.
