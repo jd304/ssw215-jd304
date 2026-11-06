@@ -78,7 +78,7 @@ shows whatever the file currently contains.
 - All codes must appear in the Networks tab.
 - The page MUST still be rendered by Jinja from templates/index.html, with the book
 list coming from a database query.
-- GET /api/projects MUST return every book as a JSON array with status code 200, built
+- GET /api/book MUST return every book as a JSON array with status code 200, built
 from each book's to_dict() method.
 -Adding a book MUST write to the database instead of a file
 ## 4. Acceptance Checklist
