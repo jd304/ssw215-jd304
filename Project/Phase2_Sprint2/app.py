@@ -3,6 +3,7 @@ from pathlib import Path
 
 from flask import Flask, jsonify, render_template, request
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import inspect, text
 from sqlalchemy.exc import SQLAlchemyError
 
 app = Flask(__name__)
@@ -14,11 +15,12 @@ SEED_FILE = Path(__file__).resolve().parent / "books_seed.json"
 
 
 class Book(db.Model):
-    __tablename__ = "projects"
+    __tablename__ = "books"
 
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(120), nullable=False, unique=True)
     author = db.Column(db.String(120), nullable=False)
+    page_count = db.Column(db.Integer, nullable=False, default=0)
     rating = db.Column(db.Integer)
 
     def to_dict(self):
@@ -26,6 +28,7 @@ class Book(db.Model):
             "id": self.id,
             "title": self.title,
             "author": self.author,
+            "page_count": self.page_count,
             "rating": self.rating,
         }
 
@@ -50,6 +53,7 @@ def init_seed_data():
                 id=seed_book["id"],
                 title=title,
                 author=seed_book["author"],
+                page_count=seed_book.get("page_count", 0),
                 rating=seed_book["rating"],
             )
         )
@@ -62,18 +66,32 @@ def init_seed_data():
 
 Path(app.instance_path).mkdir(parents=True, exist_ok=True)
 with app.app_context():
+    existing_tables = set(inspect(db.engine).get_table_names())
+    if "projects" in existing_tables and "books" not in existing_tables:
+        with db.engine.begin() as connection:
+            connection.execute(text("ALTER TABLE projects RENAME TO books"))
     db.create_all()
+    book_columns = {column["name"] for column in inspect(db.engine).get_columns("books")}
+    if "page_count" not in book_columns:
+        with db.engine.begin() as connection:
+            connection.execute(
+                text("ALTER TABLE books ADD COLUMN page_count INTEGER NOT NULL DEFAULT 0")
+            )
     init_seed_data()
 
 
 @app.route("/")
 def index():
-    books = Book.query.order_by(Book.id).all()
-    return render_template("index.html", books=books)
+    bookInfo_db = [
+        book.to_dict() for book in Book.query.order_by(Book.id).all()
+    ]
+    return render_template("index.html", books=bookInfo_db)
 
 
+@app.route("/api/books")
+@app.route("/api/book")
 @app.route("/api/projects")
-def get_projects():
+def get_books():
     books = Book.query.order_by(Book.id).all()
     return jsonify([book.to_dict() for book in books]), 200
 
@@ -103,7 +121,11 @@ def add_book():
     if type(rating) is not int:
         return jsonify(error="An integer rating is required."), 400
 
-    book = Book(title=title, author=author, rating=rating)
+    page_count = submitted_book.get("page_count")
+    if type(page_count) is not int or page_count < 0:
+        return jsonify(error="A non-negative integer page count is required."), 400
+
+    book = Book(title=title, author=author, page_count=page_count, rating=rating)
     db.session.add(book)
     try:
         db.session.commit()

@@ -2,6 +2,7 @@ const addBookButton = document.querySelector('.add-book-link');
 const titleInput = document.getElementById('new-book');
 const authorInput = document.getElementById('book-author');
 const ratingInput = document.getElementById('book-rating');
+const pageCountInput = document.getElementById('book-page-count');
 const booksList = document.querySelector('.books-list');
 const bookCount = document.getElementById('book-count');
 
@@ -19,11 +20,15 @@ function makeBookCard(book) {
   author.className = 'book-meta';
   author.textContent = `Author: ${book.author}`;
 
+  const pageCount = document.createElement('p');
+  pageCount.className = 'book-meta';
+  pageCount.textContent = `Page count: ${book.page_count}`;
+
   const rating = document.createElement('span');
   rating.className = 'book-rating';
   rating.textContent = `${book.rating} stars`;
 
-  card.append(title, author, rating);
+  card.append(title, author, pageCount, rating);
   return card;
 }
 
@@ -31,8 +36,14 @@ async function addBook() {
   titleInput.setCustomValidity('');
   authorInput.setCustomValidity('');
   ratingInput.setCustomValidity('');
+  pageCountInput.setCustomValidity('');
 
-  if (!titleInput.reportValidity() || !authorInput.reportValidity() || !ratingInput.reportValidity()) {
+  if (
+    !titleInput.reportValidity()
+    || !authorInput.reportValidity()
+    || !ratingInput.reportValidity()
+    || !pageCountInput.reportValidity()
+  ) {
     return;
   }
 
@@ -40,6 +51,8 @@ async function addBook() {
   const author = authorInput.value.trim();
   const ratingValue = ratingInput.value.trim();
   const rating = Number(ratingValue);
+  const pageCountValue = pageCountInput.value.trim();
+  const pageCount = Number(pageCountValue);
 
   if (!title || !author) {
     titleInput.setCustomValidity(title ? '' : 'Enter a book title.');
@@ -55,11 +68,17 @@ async function addBook() {
     return;
   }
 
+  if (!/^\d+$/.test(pageCountValue) || !Number.isSafeInteger(pageCount)) {
+    pageCountInput.setCustomValidity('Enter a non-negative whole-number page count.');
+    pageCountInput.reportValidity();
+    return;
+  }
+
   try {
     const response = await fetch('/books', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ title, author, rating }),
+      body: JSON.stringify({ title, author, rating, page_count: pageCount }),
     });
     if (!response.ok) {
       throw new Error(`Saving the book failed with status ${response.status}.`);
@@ -78,6 +97,7 @@ async function addBook() {
   titleInput.value = '';
   authorInput.value = '';
   ratingInput.value = '';
+  pageCountInput.value = '';
   titleInput.focus();
 }
 
