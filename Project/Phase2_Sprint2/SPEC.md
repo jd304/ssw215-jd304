@@ -1,4 +1,4 @@
-#SPEC: Devloping front end for project (book tracking app)
+#SPEC: Devloping front end and backend for project (book tracking app)
 
 ## 1. Purpose and Scope
 - a book trcking app for a single user.
@@ -41,7 +41,7 @@ happen before books.json is opened.
 MUST NOT read or write books_seed.json at runtime, except when seeding an empty
 database.
 - The book model MUST declare id as the primary key, title as db.String(120) with
-nullable=False and unique=True, and rating as db.Integer.
+nullable=False and unique=True, page count as db.Integer, and rating as db.Integer.
 - The database MUST be created by db.create_all() inside an app.app_context() block when
 the server starts.
 - init_seed_data() MUST insert the books from books_seed.json only when the
@@ -59,6 +59,8 @@ bound to it reading "Enter book title".
 bound to it reading "Enter author name".
 - Below the text input there MUST be a text input with id="book-rating", and a <label>
 bound to it reading "Enter star rating for the book".
+- Below the text input there MUST be a text input with id="book-page-count", and a <label>
+bound to it reading "Enter page count for the book".
 - Action link: a button labelled "Add book" that links to `#addBooks` located below the text inputs.
 - The page MUST update immediately after buttons are pressed, no reload.
 - Clicking the "Add book" button MUST add the inputs 
@@ -66,7 +68,7 @@ bound to it reading "Enter star rating for the book".
 - Books section with id="Books": lists the inputed book information.
 - After pressing the "Add book" button a card should appear under the Books section with the information that was inputed.  
 - Each book in bookInfo MUST have the keys: id (an integer), title, author,
-and rating (an integer).
+and rating (an integer), page count (an integer).
 - Each rendered card MUST carry the attribute data-book-id holding that books's id.
  Visiting http://127.0.0.1:5000/ MUST serve the page, with one card per entry in
 bookInfo_db.
