@@ -2,29 +2,80 @@ import json
 from pathlib import Path
 
 from flask import Flask, jsonify, render_template, request
+from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy.exc import SQLAlchemyError
 
 app = Flask(__name__)
+app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///portfolio.db"
+app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
-BOOKS_FILE = Path(__file__).resolve().parent / "books.json"
-
-
-def load_books():
-    with BOOKS_FILE.open(encoding="utf-8") as books_file:
-        books = json.load(books_file)
-    if not isinstance(books, list):
-        raise ValueError("books.json must contain a list of books")
-    return books
+db = SQLAlchemy(app)
+SEED_FILE = Path(__file__).resolve().parent / "books_seed.json"
 
 
-def save_books(bookInfo_db):
-    with BOOKS_FILE.open("w", encoding="utf-8") as books_file:
-        json.dump(bookInfo_db, books_file, indent=2)
+class Book(db.Model):
+    __tablename__ = "projects"
+
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(120), nullable=False, unique=True)
+    author = db.Column(db.String(120), nullable=False)
+    rating = db.Column(db.Integer)
+
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "title": self.title,
+            "author": self.author,
+            "rating": self.rating,
+        }
+
+
+def init_seed_data():
+    if db.session.query(Book.id).first() is not None:
+        return
+
+    with SEED_FILE.open(encoding="utf-8") as seed_file:
+        seed_books = json.load(seed_file)
+    if not isinstance(seed_books, list):
+        raise ValueError("books_seed.json must contain a list of books")
+
+    seeded_titles = set()
+    for seed_book in seed_books:
+        title = seed_book["title"]
+        if title in seeded_titles:
+            continue
+        seeded_titles.add(title)
+        db.session.add(
+            Book(
+                id=seed_book["id"],
+                title=title,
+                author=seed_book["author"],
+                rating=seed_book["rating"],
+            )
+        )
+    try:
+        db.session.commit()
+    except SQLAlchemyError:
+        db.session.rollback()
+        raise
+
+
+Path(app.instance_path).mkdir(parents=True, exist_ok=True)
+with app.app_context():
+    db.create_all()
+    init_seed_data()
 
 
 @app.route("/")
 def index():
-    bookInfo_db = load_books()
-    return render_template("index.html", books=bookInfo_db)
+    books = Book.query.order_by(Book.id).all()
+    return render_template("index.html", books=books)
+
+
+@app.route("/api/projects")
+def get_projects():
+    books = Book.query.order_by(Book.id).all()
+    return jsonify([book.to_dict() for book in books]), 200
 
 
 @app.route("/books", methods=["POST"])
@@ -43,20 +94,24 @@ def add_book():
     ):
         return jsonify(error="A non-empty title and author are required."), 400
 
+    title = title.strip()
+    author = author.strip()
+    if len(title) > 120 or len(author) > 120:
+        return jsonify(error="Title and author must be 120 characters or fewer."), 400
+
     rating = submitted_book.get("rating")
     if type(rating) is not int:
         return jsonify(error="An integer rating is required."), 400
 
-    bookInfo_db = load_books()
-    new_book = {
-        "id": max((book["id"] for book in bookInfo_db), default=0) + 1,
-        "title": title.strip(),
-        "author": author.strip(),
-        "rating": rating,
-    }
-    bookInfo_db.append(new_book)
-    save_books(bookInfo_db)
-    return jsonify(new_book), 201
+    book = Book(title=title, author=author, rating=rating)
+    db.session.add(book)
+    try:
+        db.session.commit()
+    except SQLAlchemyError:
+        db.session.rollback()
+        return jsonify(error="Unable to save the book."), 400
+
+    return jsonify(book.to_dict()), 201
 
 
 if __name__ == "__main__":
