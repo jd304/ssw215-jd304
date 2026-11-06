@@ -82,12 +82,12 @@ list coming from a database query.
 from each book's to_dict() method.
 -Adding a book MUST write to the database instead of a file
 ## 4. Acceptance Checklist
-- [ ] Starting the server creates instance/portfolio.db, and the page shows the projects
+- [ X] Starting the server creates instance/portfolio.db, and the page shows the projects
 that were in projects_seed.json.
-- [ ] Restarting the server does not duplicate any project.
-- [ ] Opening http://127.0.0.1:5000/api/projects in the browser shows the projects as
+- [ X] Restarting the server does not duplicate any project.
+- [ X] Opening http://127.0.0.1:5000/api/projects in the browser shows the projects as
 JSON.
-- [ ] instance/ and *.db are ignored by Git and do not appear in git status.
+- [ X] instance/ and *.db are ignored by Git and do not appear in git status.
 
 ## 5. Audit Protocol
 - Inspect the generated code line by line with `git diff --staged` before committing.
