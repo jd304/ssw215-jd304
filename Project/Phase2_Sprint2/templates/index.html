@@ -33,6 +33,11 @@
           <input id="book-rating" name="book-rating" type="text" inputmode="numeric" required />
         </div>
 
+        <div class="field-group">
+          <label for="book-page-count">Enter page count for the book</label>
+          <input id="book-page-count" name="book-page-count" type="text" inputmode="numeric" required />
+        </div>
+
         <a class="button primary add-book-link" href="#addBooks">Add book</a>
       </section>
 
@@ -47,6 +52,7 @@
             <article class="book-card" data-book-id="{{ book.id }}">
               <h3>{{ book.title }}</h3>
               <p class="book-meta">Author: {{ book.author }}</p>
+              <p class="book-meta">Page count: {{ book.page_count }}</p>
               <span class="book-rating">{{ book.rating }} stars</span>
             </article>
             {% endfor %}

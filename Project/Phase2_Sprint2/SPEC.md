@@ -16,8 +16,8 @@ border-box; }`.
 - Styling MUST use class selectors. ID selectors MUST NOT be used for styling.
 - Showing and hiding MUST be done by adding and removing a CSS class. app.js MUST NOT set
 styles directly through .style.
-- All project data MUST live in a Python list of dictionaries named bookInfo_db in
-app.py. templates/index.html MUST NOT contain a hardcoded project card.
+- All book data MUST live in a Python list of dictionaries named bookInfo_db in
+app.py. templates/index.html MUST NOT contain a hardcoded book card.
 - templates/index.html MUST render one card per book with a {% for %} loop.
 - style.css and app.js MUST be linked with url_for('static', filename=...), never with a
 plain relative path.
@@ -29,7 +29,7 @@ block that runs it with debug=True when the file is executed directly
 hardcoded list of books.
 - The path to book.json MUST be built from the location of app.py, not from a bare
 relative path.
-- Every route that changes a project MUST write the whole list back to books.json
+- Every route that changes a book MUST write the whole list back to books.json
 before it returns a response.
 - books.json MUST be written with json.dump(..., indent=2) so it stays readable in a
 diff.
@@ -45,7 +45,7 @@ nullable=False and unique=True, page count as db.Integer, and rating as db.Integ
 - The database MUST be created by db.create_all() inside an app.app_context() block when
 the server starts.
 - init_seed_data() MUST insert the books from books_seed.json only when the
-projects table is empty, so restarting the server never duplicates rows.
+books table is empty, so restarting the server never duplicates rows.
 - Any commit the database refuses MUST be followed by db.session.rollback(), and the
 route MUST return 400 with a JSON error rather than crashing.
 
@@ -84,10 +84,10 @@ list coming from a database query.
 from each book's to_dict() method.
 -Adding a book MUST write to the database instead of a file
 ## 4. Acceptance Checklist
-- [ X] Starting the server creates instance/portfolio.db, and the page shows the projects
-that were in projects_seed.json.
-- [ X] Restarting the server does not duplicate any project.
-- [ X] Opening http://127.0.0.1:5000/api/projects in the browser shows the projects as
+- [ X] Starting the server creates instance/portfolio.db, and the page shows the books
+that were in books_seed.json.
+- [X ] Restarting the server does not duplicate any book.
+- [X ] Opening http://127.0.0.1:5000/api/books in the browser shows the books as
 JSON.
 - [ X] instance/ and *.db are ignored by Git and do not appear in git status.
 
