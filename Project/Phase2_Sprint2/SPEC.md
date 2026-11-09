@@ -84,7 +84,7 @@ list coming from a database query.
 from each book's to_dict() method.
 -Adding a book MUST write to the database instead of a file
 ## 4. Acceptance Checklist
-- [ X] Starting the server creates instance/portfolio.db, and the page shows the books
+- [ X] Starting the server creates instance/bookTracking.db, and the page shows the books
 that were in books_seed.json.
 - [X ] Restarting the server does not duplicate any book.
 - [X ] Opening http://127.0.0.1:5000/api/books in the browser shows the books as
