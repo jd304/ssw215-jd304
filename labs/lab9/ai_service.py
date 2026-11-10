@@ -50,7 +50,7 @@ def extract_project_details(notes: str) -> ProjectDetails:
         raise AIServiceUnavailableError from error
     except APIStatusError as error:
         if error.status_code >= 500:
-            raise AIServiceUnavailableError from error
+            raise AIServiceUnavailableError from error 
         raise
 
     message = completion.choices[0].message
