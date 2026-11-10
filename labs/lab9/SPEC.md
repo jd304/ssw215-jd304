@@ -163,13 +163,13 @@ server does not crash.
 <!-- written by JD -->
 - [X ] Starting the server loads the author name on screen
 data.
-- [ ] .env is ignored by Git and never appears in git status.
-- [ ] Pasting a paragraph of notes and pressing Smart create adds a project with a title,
+- [ X] .env is ignored by Git and never appears in git status.
+- [ X] Pasting a paragraph of notes and pressing Smart create adds a project with a title,
 a summary and a technologies list.
-- [ ] /api/projects shows the new project with all three fields filled in.
-- [ ] Notes shorter than 20 characters come back as 400, and nothing is sent to the
+- [ X] /api/projects shows the new project with all three fields filled in.
+- [ X] Notes shorter than 20 characters come back as 400, and nothing is sent to the
 provider.
-- [ ] Deleting instance/portfolio.db and restarting rebuilds the table with the new
+- [ X] Deleting instance/portfolio.db and restarting rebuilds the table with the new
 columns.
 ## 5. Audit Protocol
 - Inspect the generated code line by line with `git diff --staged` before committing.
