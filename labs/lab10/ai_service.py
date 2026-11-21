@@ -123,7 +123,7 @@ def refine_project_draft(session_id: str, feedback: str):
     session["draft"] = draft
     return draft.model_dump()
 
-
+ 
 def get_project_draft(session_id: str):
     session = project_draft_sessions.get(session_id)
     if session is None:

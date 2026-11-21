@@ -14,7 +14,7 @@ README_MAX_LENGTH = 4000
 class GitHubRepositoryNotFoundError(Exception):
     pass
 
-
+ 
 class GitHubServiceUnavailableError(Exception):
     pass
 

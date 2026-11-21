@@ -80,7 +80,7 @@ That file MUST NOT import openai.
 requests, and MUST NOT know where the text it is given came from.
 - app.py MUST NOT import openai and MUST NOT import requests.
 - The README text MUST be cut to at most 4000 characters before it is sent to the
-provider.
+provider. 
 - A draft MUST NOT be written to the database until the user approves it. The approve
 route MUST be the only route that writes to the database, and it MUST NOT call the
 provider.
