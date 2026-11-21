@@ -297,11 +297,13 @@ def commit_github_import():
 with app.app_context():
     db.create_all()
     if "difficulty" not in {
-        column["name"] for column in inspect(db.engine).get_columns("projects")
+        column["name"]
+        for column in inspect(db.engine).get_columns(Project.__tablename__)
     }:
         with db.engine.begin() as connection:
             connection.exec_driver_sql(
-                "ALTER TABLE projects ADD COLUMN difficulty VARCHAR(20) NOT NULL DEFAULT ''"
+                f"ALTER TABLE {Project.__tablename__} "
+                "ADD COLUMN difficulty VARCHAR(20) NOT NULL DEFAULT ''"
             )
     init_seed_data()
 
