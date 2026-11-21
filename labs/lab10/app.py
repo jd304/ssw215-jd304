@@ -245,6 +245,35 @@ def refine_github_import():
     return jsonify(draft), 200
 
 
+@app.route("/api/projects/git-refine-blind", methods=["POST"])
+def refine_github_import_blind():
+    from ai_service import (
+        AIRefusalError,
+        AIServiceUnavailableError,
+        DraftSessionNotFoundError,
+        refine_project_draft_blind,
+    )
+
+    data = request.get_json(silent=True)
+    session_id = data.get("session_id") if isinstance(data, dict) else None
+    feedback = data.get("feedback") if isinstance(data, dict) else None
+    if not isinstance(session_id, str) or not session_id:
+        return jsonify({"error": "A session_id is required"}), 400
+    if not isinstance(feedback, str) or not feedback.strip():
+        return jsonify({"error": "Feedback is required"}), 400
+
+    try:
+        draft = refine_project_draft_blind(session_id, feedback)
+    except DraftSessionNotFoundError:
+        return jsonify({"error": "Draft session not found"}), 404
+    except AIRefusalError:
+        return jsonify({"error": "The project request was refused"}), 422
+    except AIServiceUnavailableError:
+        return jsonify({"error": "The AI provider is unavailable"}), 503
+
+    return jsonify(draft), 200
+
+
 @app.route("/api/projects/git-commit", methods=["POST"])
 def commit_github_import():
     from ai_service import (

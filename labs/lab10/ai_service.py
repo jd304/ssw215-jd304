@@ -124,6 +124,17 @@ def refine_project_draft(session_id: str, feedback: str):
     return draft.model_dump()
 
  
+def refine_project_draft_blind(session_id: str, feedback: str):
+    if session_id not in project_draft_sessions:
+        raise DraftSessionNotFoundError
+
+    draft = _request_structured_response(
+        [{"role": "user", "content": feedback}],
+        GitHubProjectDraft,
+    )
+    return draft.model_dump()
+
+
 def get_project_draft(session_id: str):
     session = project_draft_sessions.get(session_id)
     if session is None:
