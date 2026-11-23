@@ -211,14 +211,14 @@ a summary and a technologies list.
 provider.
 - [ X] Deleting instance/portfolio.db and restarting rebuilds the table with the new
 columns.
-- [ ] .env holds two secrets and still never appears in git status.
-- [ ] Typing an owner and a repo and pressing Fetch draft shows a draft with all four
+- [ X] .env holds two secrets and still never appears in git status.
+- [ X] Typing an owner and a repo and pressing Fetch draft shows a draft with all four
 fields.
-- [ ] Sending feedback changes the draft on the page and leaves /api/projects unchanged.
-- [ ] Approve and save adds the project to /api/projects.
-- [ ] A repository name that does not exist comes back as 404 and nothing is sent to the
+- [ X] Sending feedback changes the draft on the page and leaves /api/projects unchanged.
+- [ X] Approve and save adds the project to /api/projects.
+- [ X] A repository name that does not exist comes back as 404 and nothing is sent to the
 provider.
-- [ ] Deleting instance/portfolio.db and restarting rebuilds the table with the
+- [ X] Deleting instance/portfolio.db and restarting rebuilds the table with the
 difficulty column.
 ## 5. Audit Protocol
 - Inspect the generated code line by line with `git diff --staged` before committing.
