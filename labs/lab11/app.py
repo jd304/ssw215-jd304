@@ -1,0 +1,341 @@
+import json
+from pathlib import Path
+
+from flask import Flask, jsonify, render_template, request
+from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import inspect
+from sqlalchemy.exc import SQLAlchemyError
+
+app = Flask(__name__)
+database_path = Path(app.instance_path) / "portfolio.db"
+database_path.parent.mkdir(parents=True, exist_ok=True)
+app.config["SQLALCHEMY_DATABASE_URI"] = f"sqlite:///{database_path.as_posix()}"
+app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+
+db = SQLAlchemy(app)
+
+
+class Author(db.Model):
+    __tablename__ = "authors"
+
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(80), nullable=False)
+    projects = db.relationship("Project", backref="author")
+
+
+class Project(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(120), nullable=False, unique=True)
+    description = db.Column(db.Text, nullable=False, default="")
+    summary = db.Column(db.Text, nullable=False, default="")
+    technologies = db.Column(db.Text, nullable=False, default="")
+    difficulty = db.Column(db.String(20), nullable=False, default="")
+    likes = db.Column(db.Integer, nullable=False, default=0)
+    author_id = db.Column(db.Integer, db.ForeignKey("authors.id"), nullable=False)
+
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "title": self.title,
+            "description": self.description,
+            "summary": self.summary,
+            "technologies": self.technologies,
+            "difficulty": self.difficulty,
+            "likes": self.likes,
+            "author_name": self.author.name,
+        }
+
+
+def init_seed_data():
+    author = Author.query.first()
+    if author is None:
+        author = Author(name="Jillian")
+        db.session.add(author)
+
+    if Project.query.first() is None:
+        seed_path = Path(__file__).with_name("projects_seed.json")
+        with seed_path.open(encoding="utf-8") as seed_file:
+            projects = json.load(seed_file)
+
+        db.session.add_all(
+            Project(
+                id=project["id"],
+                title=project["title"],
+                description=project["description"],
+                likes=project["likes"],
+                author=author,
+            )
+            for project in projects
+        )
+
+    try:
+        db.session.commit()
+    except SQLAlchemyError:
+        db.session.rollback()
+        raise
+
+
+@app.route("/")
+def index():
+    projects = Project.query.order_by(Project.id).all()
+    return render_template("index.html", projects=projects)
+
+
+@app.route("/api/projects", methods=["GET"])
+def get_projects():
+    projects = Project.query.order_by(Project.id).all()
+    return jsonify([project.to_dict() for project in projects])
+
+
+@app.route("/api/projects/<int:project_id>/upvote", methods=["POST"])
+def upvote_project(project_id):
+    project = db.session.get(Project, project_id)
+    if project is None:
+        return jsonify({"error": "Project not found"}), 404
+
+    project.likes += 1
+    try:
+        db.session.commit()
+    except SQLAlchemyError:
+        db.session.rollback()
+        return jsonify({"error": "Unable to update project"}), 400
+
+    return jsonify({"id": project.id, "likes": project.likes})
+
+
+@app.route("/api/projects", methods=["POST"])
+def create_project():
+    data = request.get_json(silent=True)
+    title = data.get("title") if isinstance(data, dict) else None
+    if not isinstance(title, str) or not title.strip():
+        return jsonify({"error": "A non-empty title is required"}), 400
+
+    title = title.strip()
+    if len(title) > 120:
+        return jsonify({"error": "Title must be 120 characters or fewer"}), 400
+
+    author = Author.query.first()
+    if author is None:
+        return jsonify({"error": "No project author is configured"}), 400
+
+    project = Project(title=title, description="", likes=0, author=author)
+    db.session.add(project)
+    try:
+        db.session.commit()
+    except SQLAlchemyError:
+        db.session.rollback()
+        return jsonify({"error": "A project with that title already exists"}), 400 
+
+    return jsonify(project.to_dict()), 201
+
+
+@app.route("/api/projects/smart", methods=["POST"])
+def smart_create_project():
+    from ai_service import (
+        AIRefusalError,
+        AIServiceUnavailableError,
+        extract_project_details,
+    )
+
+    data = request.get_json(silent=True)
+    notes = data.get("notes") if isinstance(data, dict) else None
+    if not isinstance(notes, str) or len(notes.strip()) < 20:
+        return jsonify({"error": "Notes must be at least 20 characters long"}), 400
+
+    try:
+        details = extract_project_details(notes.strip())
+    except AIRefusalError:
+        return jsonify({"error": "The project request was refused"}), 422
+    except AIServiceUnavailableError:
+        return jsonify({"error": "The AI provider is unavailable"}), 503
+
+    author = Author.query.first()
+    if author is None:
+        return jsonify({"error": "No project author is configured"}), 400
+
+    summary = details.summary.strip()
+    project = Project(
+        title=details.title.strip(),
+        description=summary,
+        summary=summary,
+        technologies=", ".join(technology.strip() for technology in details.technologies),
+        likes=0,
+        author=author,
+    )
+    if not project.title or len(project.title) > 120 or not summary:
+        return jsonify({"error": "The project details were incomplete"}), 422
+
+    db.session.add(project)
+    try:
+        db.session.commit()
+    except SQLAlchemyError:
+        db.session.rollback()
+        return jsonify({"error": "Unable to create project"}), 400
+
+    return jsonify(project.to_dict()), 201
+
+
+@app.route("/api/projects/git-start", methods=["POST"])
+def start_github_import():
+    from ai_service import (
+        AIRefusalError,
+        AIServiceUnavailableError,
+        start_project_draft,
+    )
+    from github_service import (
+        GitHubRepositoryNotFoundError,
+        GitHubServiceUnavailableError,
+        fetch_repository_readme,
+    )
+
+    data = request.get_json(silent=True)
+    owner = data.get("owner") if isinstance(data, dict) else None
+    repo = data.get("repo") if isinstance(data, dict) else None
+    if not isinstance(owner, str) or not owner.strip():
+        return jsonify({"error": "A repository owner is required"}), 400
+    if not isinstance(repo, str) or not repo.strip():
+        return jsonify({"error": "A repository name is required"}), 400
+
+    try:
+        readme = fetch_repository_readme(owner.strip(), repo.strip())
+    except GitHubRepositoryNotFoundError:
+        return jsonify({"error": "Repository or README not found"}), 404
+    except GitHubServiceUnavailableError:
+        return jsonify({"error": "GitHub is unavailable"}), 503
+
+    if len(readme.strip()) < 20:
+        return jsonify({"error": "The repository README must be at least 20 characters"}), 400
+
+    try:
+        session_id, draft = start_project_draft(readme)
+    except AIRefusalError:
+        return jsonify({"error": "The project request was refused"}), 422
+    except AIServiceUnavailableError:
+        return jsonify({"error": "The AI provider is unavailable"}), 503
+
+    return jsonify({"session_id": session_id, "draft": draft}), 201
+
+
+@app.route("/api/projects/git-refine", methods=["POST"])
+def refine_github_import():
+    from ai_service import (
+        AIRefusalError,
+        AIServiceUnavailableError,
+        DraftSessionNotFoundError,
+        refine_project_draft,
+    )
+
+    data = request.get_json(silent=True)
+    session_id = data.get("session_id") if isinstance(data, dict) else None
+    feedback = data.get("feedback") if isinstance(data, dict) else None
+    if not isinstance(session_id, str) or not session_id:
+        return jsonify({"error": "A session_id is required"}), 400
+    if not isinstance(feedback, str) or not feedback.strip():
+        return jsonify({"error": "Feedback is required"}), 400
+
+    try:
+        draft = refine_project_draft(session_id, feedback.strip())
+    except DraftSessionNotFoundError:
+        return jsonify({"error": "Draft session not found"}), 404
+    except AIRefusalError:
+        return jsonify({"error": "The project request was refused"}), 422
+    except AIServiceUnavailableError:
+        return jsonify({"error": "The AI provider is unavailable"}), 503
+
+    return jsonify(draft), 200
+
+
+@app.route("/api/projects/git-refine-blind", methods=["POST"])
+def refine_github_import_blind():
+    from ai_service import (
+        AIRefusalError,
+        AIServiceUnavailableError,
+        DraftSessionNotFoundError,
+        refine_project_draft_blind,
+    )
+
+    data = request.get_json(silent=True)
+    session_id = data.get("session_id") if isinstance(data, dict) else None
+    feedback = data.get("feedback") if isinstance(data, dict) else None
+    if not isinstance(session_id, str) or not session_id:
+        return jsonify({"error": "A session_id is required"}), 400
+    if not isinstance(feedback, str) or not feedback.strip():
+        return jsonify({"error": "Feedback is required"}), 400
+
+    try:
+        draft = refine_project_draft_blind(session_id, feedback)
+    except DraftSessionNotFoundError:
+        return jsonify({"error": "Draft session not found"}), 404
+    except AIRefusalError:
+        return jsonify({"error": "The project request was refused"}), 422
+    except AIServiceUnavailableError:
+        return jsonify({"error": "The AI provider is unavailable"}), 503
+
+    return jsonify(draft), 200
+
+
+@app.route("/api/projects/git-commit", methods=["POST"])
+def commit_github_import():
+    from ai_service import (
+        DraftSessionNotFoundError,
+        discard_project_draft,
+        get_project_draft,
+    )
+
+    data = request.get_json(silent=True)
+    session_id = data.get("session_id") if isinstance(data, dict) else None
+    if not isinstance(session_id, str) or not session_id:
+        return jsonify({"error": "A session_id is required"}), 400
+
+    try:
+        draft = get_project_draft(session_id)
+    except DraftSessionNotFoundError:
+        return jsonify({"error": "Draft session not found"}), 404
+
+    author = Author.query.first()
+    if author is None:
+        return jsonify({"error": "No project author is configured"}), 400
+
+    summary = draft["summary"].strip()
+    title = draft["title"].strip()
+    technologies = draft["technologies"]
+    difficulty = draft["difficulty"]
+    if not title or len(title) > 120 or not summary:
+        return jsonify({"error": "The project details were incomplete"}), 422
+
+    project = Project(
+        title=title,
+        description=summary,
+        summary=summary,
+        technologies=", ".join(technology.strip() for technology in technologies),
+        difficulty=difficulty,
+        likes=0,
+        author=author,
+    )
+    db.session.add(project)
+    try:
+        db.session.commit()
+    except SQLAlchemyError:
+        db.session.rollback()
+        return jsonify({"error": "Unable to save project"}), 400
+
+    discard_project_draft(session_id)
+    return jsonify(project.to_dict()), 201
+
+
+with app.app_context():
+    db.create_all()
+    if "difficulty" not in {
+        column["name"]
+        for column in inspect(db.engine).get_columns(Project.__tablename__)
+    }:
+        with db.engine.begin() as connection:
+            connection.exec_driver_sql(
+                f"ALTER TABLE {Project.__tablename__} "
+                "ADD COLUMN difficulty VARCHAR(20) NOT NULL DEFAULT ''"
+            )
+    init_seed_data()
+
+ 
+if __name__ == "__main__":
+    app.run(debug=True)
